@@ -5,9 +5,24 @@ let amarillo= "#f3c237";
 let gris= "#a4aec4";
 
 let diccionario = ["APPLE", "HOUSE", "ANGEL", "PASTA", "NEVER", "AFTER"];
-let max = diccionario.length -1;
-let indice = Math.floor(Math.random() * max + 1)
-palabra = diccionario[indice];
+palabra = palabraAleatoria(diccionario);
+
+const API = "https://random-word-api.herokuapp.com/word?length=5&lang=es";
+
+fetch(API).then((response) => {
+  response.json().then((body)=>{
+  palabra = body[0].toUpperCase();  
+});
+});
+
+
+
+function palabraAleatoria(diccionario) {
+  let max = diccionario.length -1;
+  let indice = Math.floor(Math.random() * max + 1);
+  return diccionario[indice];
+}
+
 
 let input = document.getElementById("guess-input");
 input.addEventListener("keypress", (event) => {
@@ -17,10 +32,11 @@ input.addEventListener("keypress", (event) => {
   }
 });
 
+
 document.getElementById("guess-button").addEventListener("click", () => {
   const intento = leerIntento();
   if (palabra === intento) {
-    terminar("GANASTE!😀");
+    terminar("🥇GANASTE!🥇");
     return;
   }
   const row = document.createElement("div");
@@ -42,7 +58,7 @@ document.getElementById("guess-button").addEventListener("click", () => {
   grid.appendChild(row);
   tieneVidas--;
   if(!tieneVidas) {
-    terminar("PERDISTE!😀");
+    terminar("😭PERDISTE!😭");
     return
   }
 });
@@ -62,6 +78,12 @@ function noSerRepite(palabra, letra){
   //tiene que ver cuantas letras verdes en palabras y ver si sobra alguna.  
   return true;
 }
+
+
+
+
+
+
 
 
 
